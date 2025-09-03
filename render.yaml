@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: whispr-api
+    env: node
+    runtime: node
+    plan: free
+    region: oregon
+    nodeVersion: 18
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    healthCheckPath: "/api/health"
+    envVars:
+      - key: API_ORIGIN
+        value: https://whispr-api.onrender.com
+      - key: FRONTEND_ORIGIN
+        value: https://whispr.netlify.app
+      - key: BASE_URL
+        value: https://whispr.netlify.app
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: RATE_LIMIT_WINDOW_MS
+        value: "60000"
+      - key: RATE_LIMIT_MAX
+        value: "50"
+      - key: RATE_LIMIT_COOLDOWN_MS_USER
+        value: "10000"
+      - key: MESSAGE_MAX_LEN
+        value: "1000"
+      - key: USERNAME_REGEX
+        value: ^[a-z0-9_]{3,15}$
+      - key: WEB_PUSH_CONTACT
+        value: mayalachristgottlieb@gmail.com
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false

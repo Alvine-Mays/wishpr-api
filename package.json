@@ -1,0 +1,40 @@
+{
+  "name": "whispr-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend Express.js sécurisé pour Whispr",
+  "main": "server.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "node server.js",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "argon2": "^0.40.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.6.3",
+    "nanoid": "^5.0.7",
+    "pino": "^9.3.2",
+    "pino-http": "^9.0.0",
+    "web-push": "^3.6.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/supertest": "^6.0.3",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.9.0",
+    "mongodb-memory-server": "^10.1.4",
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0",
+    "vitest": "^2.0.5"
+  }
+}
