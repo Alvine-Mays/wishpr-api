@@ -48,11 +48,11 @@ router.post('/:username', messageLimiter, validate(MessageParamsSchema, 'params'
       return res.status(400).json({ ok: false, error: { code: 'SPAM_DETECTED', message: 'Requête invalide' } });
     }
 
-    // Délai minimal 700ms
-    const now = Date.now();
-    if (typeof ts !== 'number' || now - ts < 700) {
-      return res.status(400).json({ ok: false, error: { code: 'TOO_FAST', message: 'Envoi trop rapide, réessayez.' } });
-    }
+    // // Délai minimal 700ms
+    // const now = Date.now();
+    // if (typeof ts !== 'number' || now - ts < 1000) {
+    //   return res.status(400).json({ ok: false, error: { code: 'TOO_FAST', message: 'Envoi trop rapide, réessayez.' } });
+    // }
 
     // Trouver l’utilisateur destinataire
     const user = await User.findOne({ username }).lean();

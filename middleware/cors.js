@@ -7,7 +7,7 @@ function corsStrict() {
     origin: env.FRONTEND_ORIGIN,
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: false,
+    credentials: true,
     maxAge: 600,
   });
 }
