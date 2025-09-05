@@ -61,10 +61,11 @@ const StatsQuerySchema = z.object({
   range: z.enum(['7d', '30d']).default('7d'),
 });
 
-const PushSubscribeSchema = z.object({
-  endpoint: z.string().url(),
-  keys: z.object({ p256dh: z.string(), auth: z.string() }),
-});
+const SubscriptionShape = z.object({ endpoint: z.string().url(), keys: z.object({ p256dh: z.string(), auth: z.string() }) });
+const PushSubscribeSchema = z.union([
+  SubscriptionShape,
+  z.object({ subscription: SubscriptionShape })
+]);
 
 const PushUnsubscribeSchema = z.object({ endpoint: z.string().url() });
 

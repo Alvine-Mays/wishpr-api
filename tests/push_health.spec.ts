@@ -42,6 +42,13 @@ describe('Health & Push API', () => {
     expect(res.body.data.status).toBe('ok');
   });
 
+  it('public key endpoint renvoie une clé publique (chaîne)', async () => {
+    const res = await request(app).get('/api/v1/push/public-key').expect(200);
+    expect(res.body.ok).toBe(true);
+    expect(res.body.data).toBeDefined();
+    expect(typeof res.body.data.publicKey).toBe('string');
+  });
+
   it('subscribe/unsubscribe web push', async () => {
     const sub = {
       endpoint: 'https://example.com/push/endpoint',

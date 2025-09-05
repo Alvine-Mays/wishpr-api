@@ -13,9 +13,9 @@ services:
       - key: API_ORIGIN
         value: https://whispr-api.onrender.com
       - key: FRONTEND_ORIGIN
-        value: https://whispr.netlify.app
+        value: https://whispr-mobile.netlify.app
       - key: BASE_URL
-        value: https://whispr.netlify.app
+        value: https://whispr-mobile.netlify.app
       - key: MONGO_URI
         sync: false
       - key: JWT_SECRET
@@ -31,7 +31,7 @@ services:
       - key: USERNAME_REGEX
         value: ^[a-z0-9_]{3,15}$
       - key: WEB_PUSH_CONTACT
-        value: mayalachristgottlieb@gmail.com
+        value: admin@whispr.app
       - key: VAPID_PUBLIC_KEY
         sync: false
       - key: VAPID_PRIVATE_KEY

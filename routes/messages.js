@@ -9,7 +9,7 @@ const { CreateMessageSchema, MessageParamsSchema } = require('../utils/validator
 const { env } = require('../utils/env');
 const { ipHash } = require('../utils/iphash');
 const { createMessageLimiter } = require('../middleware/rateLimit');
-const { sendPush, enabled: pushEnabled } = require('../utils/webpush');
+const { sendPushToDoc, isEnabled } = require('../utils/webpush');
 
 // Limiteur spécifique à l’envoi de messages
 const messageLimiter = createMessageLimiter();
@@ -48,7 +48,7 @@ router.post('/:username', messageLimiter, validate(MessageParamsSchema, 'params'
       return res.status(400).json({ ok: false, error: { code: 'SPAM_DETECTED', message: 'Requête invalide' } });
     }
 
-    // // Délai minimal 700ms
+    // Délai minimal 700ms
     // const now = Date.now();
     // if (typeof ts !== 'number' || now - ts < 1000) {
     //   return res.status(400).json({ ok: false, error: { code: 'TOO_FAST', message: 'Envoi trop rapide, réessayez.' } });
@@ -84,18 +84,19 @@ router.post('/:username', messageLimiter, validate(MessageParamsSchema, 'params'
     setCooldown(key, env.RATE_LIMIT_COOLDOWN_MS_USER);
 
     // Envoi Web Push si activé
-    if (pushEnabled) {
+    if (isEnabled()) {
       try {
         const subs = await Subscription.find({ userId: user._id }).lean();
-        const payload = { title: 'Nouveau message Whispr', body: 'Vous avez reçu un message anonyme', data: { username } };
-        await Promise.allSettled(
-          subs.map((s) =>
-            sendPush(
-              { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },
-              payload
-            )
-          )
-        );
+        const preview = content.length <= 80 ? content : content.slice(0, 80) + '…';
+        const payload = {
+          title: 'Nouveau message Whispr',
+          body: `${preview} · ${new Date().toISOString()}`,
+          icon: '/icons/icon-192.png',
+          badge: '/icons/badge-72.png',
+          data: { url: '/dashboard' },
+          tag: 'message-new',
+        };
+        await Promise.allSettled(subs.map((s) => sendPushToDoc(s, payload)));
       } catch (_) {
         // Erreurs déjà journalisées par utilitaire
       }

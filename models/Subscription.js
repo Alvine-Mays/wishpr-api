@@ -7,11 +7,14 @@ const SubscriptionSchema = new mongoose.Schema(
     endpoint: { type: String, required: true },
     p256dh: { type: String, required: true },
     auth: { type: String, required: true },
+    userAgent: { type: String },
+    lastSeenAt: { type: Date },
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 );
 
-SubscriptionSchema.index({ endpoint: 1 }, { unique: true });
+// Unicité de l'endpoint par utilisateur
+SubscriptionSchema.index({ userId: 1, endpoint: 1 }, { unique: true });
 SubscriptionSchema.index({ userId: 1 });
 
 module.exports = mongoose.model('Subscription', SubscriptionSchema);
